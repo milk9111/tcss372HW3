@@ -1,5 +1,5 @@
 /*
-	Author: Connor Lundberg, James Roberts
+	Author: Connor Lundberg, Vincent Povio
 	Date: 4/14/2017
 	
 	The first version of our LC3 personal simulation. It takes a single command
