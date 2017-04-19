@@ -200,15 +200,29 @@ int controller (CPU_p cpu, ALU_p alu) {
 // and runs that in the controller. We use the trap command HALT to stop the program after
 // the command runs.
 int main (int argc, char* argv[]) {
-  int n = 1;
-  for (n; n < argc && n < 33; n++) {
-    sscanf(argv[n], "%X", &memory[n-1]);
-  }
-  memory[31] = 0xF019;
+  int n = 1, response = 0;
+  FILE *infile;
+  char file_name[30];
 	CPU_p cpu = malloc (sizeof(CPU_s));
 	ALU_p alu = malloc (sizeof(ALU_s));
+
   initializeCPU(&cpu, &alu);
-  display(&cpu, &alu);
+
+  while (response != 9) {
+    display(&cpu, &alu);
+    scanf("%d", &response);
+    if (response == 1) {
+      printf(" File name: ");
+      scanf("%s", file_name);
+      infile = fopen(file_name, "r");
+      if (infile != NULL) {
+        while (fscanf(infile, "%X", &memory[n-1]) != EOF && n < 32);
+        display(&cpu, &alu);
+      } else {
+        printf("ERROR: File not found. Press <ENTER> to continue.");
+      }
+    }
+  }
 	controller (cpu, alu);
   free(cpu);
   free(alu);
@@ -236,8 +250,7 @@ void display(CPU_p *cpu, ALU_p *alu) {
   printf("\tCC: N:%i Z:%i P:%i\t\t\tX%4X: X%4X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
   printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 15, memory[disp_mem + 15]);
   printf("Select: 1) Load, 3) Step, 5) Display Mem, 9)Exit\n");
-  printf(">_\n");
-  printf("-----------------------------------------------------\n");
+  printf(">");
 }
 
 void initializeCPU(CPU_p *cpu, ALU_p *alu) {
@@ -259,6 +272,7 @@ void initializeCPU(CPU_p *cpu, ALU_p *alu) {
   (*cpu)->n = 0;
   (*cpu)->z = 0;
   (*cpu)->p = 0;
+  memory[31] = 0xF019;
 }
 
 void setFlags(CPU_p *cpu, ALU_p *alu, Register opcode, Register Rd) {
