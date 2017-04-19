@@ -79,7 +79,6 @@ int controller (CPU_p cpu, ALU_p alu) {
                   } else {
                     immed5 = (cpu->ir & IMMED5_FIELD) >> IMMED5_FIELD_SHIFT;
                     immed5 = sext5(IMMED5_FIELD & cpu->ir);
-                    printf("Contents of immed5 = %d\r\n", immed5);
                   }
                   break;
                 case NOT:
@@ -216,7 +215,7 @@ int main (int argc, char* argv[]) {
       scanf("%s", file_name);
       infile = fopen(file_name, "r");
       if (infile != NULL) {
-        while (fscanf(infile, "%X", &memory[n-1]) != EOF && n < 32);
+        while (fscanf(infile, "%X", &memory[n-1]) != EOF && n < 32) { n++; } ;
         display(&cpu, &alu);
       } else {
         printf("ERROR: File not found. Press <ENTER> to continue.");
@@ -233,22 +232,22 @@ void display(CPU_p *cpu, ALU_p *alu) {
   int disp_mem = ((int) memory_start) - 12288;
   printf("\tWelcome to the LC-3 Simulator Simulator\n");
   printf("\tRegisters\t\t\tMemory\n");
-  printf("\tR0: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[0], memory_start, memory[disp_mem]);
-  printf("\tR1: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[1], memory_start + 1, memory[disp_mem + 1]);
-  printf("\tR2: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[2], memory_start + 2, memory[disp_mem + 2]);
-  printf("\tR3: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[3], memory_start + 3, memory[disp_mem + 3]);
-  printf("\tR4: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[4], memory_start + 4, memory[disp_mem + 4]);
-  printf("\tR5: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[5], memory_start + 5, memory[disp_mem + 5]);
-  printf("\tR6: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[6], memory_start + 6, memory[disp_mem + 6]);
-  printf("\tR7: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[7], memory_start + 7, memory[disp_mem + 7]);
-  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 8, memory[disp_mem + 8]);
-  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 9, memory[disp_mem + 9]);
-  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 10, memory[disp_mem + 10]);
-  printf("\t PC: X%4i\t IR: X%4X\tX%4X: X%4X\n", (*cpu)->pc + 3000, (*cpu)->ir, memory_start + 11, memory[disp_mem + 11]);
-  printf("\t  A: X%4X\t  B: X%4X\tX%4X: X%4X\n", (*alu)->a, (*alu)->b, memory_start + 12, memory[disp_mem + 12]);
-  printf("\tMAR: X%4X\tMDR: X%4X\tX%4X: X%4X\n", (*cpu)->mar, (*cpu)->mdr, memory_start + 13, memory[disp_mem + 13]);
-  printf("\tCC: N:%i Z:%i P:%i\t\t\tX%4X: X%4X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
-  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 15, memory[disp_mem + 15]);
+  printf("\tR0: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[0], memory_start, memory[disp_mem]);
+  printf("\tR1: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[1], memory_start + 1, memory[disp_mem + 1]);
+  printf("\tR2: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[2], memory_start + 2, memory[disp_mem + 2]);
+  printf("\tR3: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[3], memory_start + 3, memory[disp_mem + 3]);
+  printf("\tR4: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[4], memory_start + 4, memory[disp_mem + 4]);
+  printf("\tR5: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[5], memory_start + 5, memory[disp_mem + 5]);
+  printf("\tR6: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[6], memory_start + 6, memory[disp_mem + 6]);
+  printf("\tR7: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[7], memory_start + 7, memory[disp_mem + 7]);
+  printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 8, memory[disp_mem + 8]);
+  printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 9, memory[disp_mem + 9]);
+  printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 10, memory[disp_mem + 10]);
+  printf("\t PC: X%4i\t IR: X%04X\tX%04X: X%04X\n", (*cpu)->pc + 3000, (*cpu)->ir, memory_start + 11, memory[disp_mem + 11]);
+  printf("\t  A: X%04X\t  B: X%04X\tX%04X: X%04X\n", (*alu)->a, (*alu)->b, memory_start + 12, memory[disp_mem + 12]);
+  printf("\tMAR: X%04X\tMDR: X%04X\tX%04X: X%04X\n", (*cpu)->mar, (*cpu)->mdr, memory_start + 13, memory[disp_mem + 13]);
+  printf("\tCC: N:%i Z:%i P:%i\t\t\tX%04X: X%04X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
+  printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 15, memory[disp_mem + 15]);
   printf("Select: 1) Load, 3) Step, 5) Display Mem, 9)Exit\n");
   printf(">");
 }
@@ -261,7 +260,7 @@ void initializeCPU(CPU_p *cpu, ALU_p *alu) {
   (*cpu)->reg_file[4] = 4;
   (*cpu)->reg_file[5] = 5;
   (*cpu)->reg_file[6] = 6;
-  (*cpu)->reg_file[7] = 7;
+  (*cpu)->reg_file[7] = 0xA;
   (*cpu)->pc = 0;
   (*cpu)->ir = 0;
   (*cpu)->mar = 0;
