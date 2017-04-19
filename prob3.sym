@@ -1,0 +1,9 @@
+//Symbol Name		Page Address
+//----------------	------------
+//	DATA1                   301B
+//	DATA2                   301C
+//	GETOUT                  3010
+//	HERE1                   300C
+//	HERE2                   300F
+//	RESULT                  301D
+//	START                   3003
