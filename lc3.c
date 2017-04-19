@@ -15,7 +15,7 @@
 
 // you can define a simple memory module here for this program
 unsigned int memory[32];   // 32 words of memory enough to store simple program
-
+unsigned short memory_start = 0x3000;
 
 void initializeCPU(CPU_p *, ALU_p *);
 void display(CPU_p *, ALU_p *);
@@ -188,7 +188,7 @@ int controller (CPU_p cpu, ALU_p alu) {
                   break;
               }
               state = FETCH;
-              display(&cpu, &alu);
+              //display(&cpu, &alu);
               break;
         }
     }
@@ -207,6 +207,8 @@ int main (int argc, char* argv[]) {
   memory[31] = 0xF019;
 	CPU_p cpu = malloc (sizeof(CPU_s));
 	ALU_p alu = malloc (sizeof(ALU_s));
+  initializeCPU(&cpu, &alu);
+  display(&cpu, &alu);
 	controller (cpu, alu);
   free(cpu);
   free(alu);
@@ -214,24 +216,25 @@ int main (int argc, char* argv[]) {
 }
 
 void display(CPU_p *cpu, ALU_p *alu) {
+  int disp_mem = ((int) memory_start) - 12288;
   printf("\tWelcome to the LC-3 Simulator Simulator\n");
   printf("\tRegisters\t\t\tMemory\n");
-  printf("\tR0: x%4x\t\t\tx3000: x%4x\n", (*cpu)->reg_file[0], memory[0]);
-  printf("\tR1: x%4x\t\t\tx3001: x%4x\n", (*cpu)->reg_file[1], memory[1]);
-  printf("\tR2: x%4x\t\t\tx3002: x%4x\n", (*cpu)->reg_file[2], memory[2]);
-  printf("\tR3: x%4x\t\t\tx3003: x%4x\n", (*cpu)->reg_file[3], memory[3]);
-  printf("\tR4: x%4x\t\t\tx3004: x%4x\n", (*cpu)->reg_file[4], memory[4]);
-  printf("\tR5: x%4x\t\t\tx3005: x%4x\n", (*cpu)->reg_file[5], memory[5]);
-  printf("\tR6: x%4x\t\t\tx3006: x%4x\n", (*cpu)->reg_file[6], memory[6]);
-  printf("\tR7: x%4x\t\t\tx3007: x%4x\n", (*cpu)->reg_file[7], memory[7]);
-  printf("\t\t\t\t\tx3008: x%4x\n", memory[8]);
-  printf("\t\t\t\t\tx3009: x%4x\n", memory[9]);
-  printf("\t\t\t\t\tx300A: x%4x\n", memory[10]);
-  printf("\t PC: x%4i\t IR: x%4x\tx300B: x%4x\n", (*cpu)->pc + 3000, (*cpu)->ir, memory[11]);
-  printf("\t  A: x%4x\t  B: x%4x\tx300C: x%4x\n", (*alu)->a, (*alu)->b, memory[12]);
-  printf("\tMAR: x%4x\tMDR: x%4x\tx300D: x%4x\n", (*cpu)->mar, (*cpu)->mdr, memory[13]);
-  printf("\tCC: N:%i Z:%i P:%i\t\t\tx300E: x%4x\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory[14]);
-  printf("\t\t\t\t\tx300F: x%4x\n", memory[15]);
+  printf("\tR0: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[0], memory_start, memory[disp_mem]);
+  printf("\tR1: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[1], memory_start + 1, memory[disp_mem + 1]);
+  printf("\tR2: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[2], memory_start + 2, memory[disp_mem + 2]);
+  printf("\tR3: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[3], memory_start + 3, memory[disp_mem + 3]);
+  printf("\tR4: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[4], memory_start + 4, memory[disp_mem + 4]);
+  printf("\tR5: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[5], memory_start + 5, memory[disp_mem + 5]);
+  printf("\tR6: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[6], memory_start + 6, memory[disp_mem + 6]);
+  printf("\tR7: X%4X\t\t\tX%4X: X%4X\n", (*cpu)->reg_file[7], memory_start + 7, memory[disp_mem + 7]);
+  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 8, memory[disp_mem + 8]);
+  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 9, memory[disp_mem + 9]);
+  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 10, memory[disp_mem + 10]);
+  printf("\t PC: X%4i\t IR: X%4X\tX%4X: X%4X\n", (*cpu)->pc + 3000, (*cpu)->ir, memory_start + 11, memory[disp_mem + 11]);
+  printf("\t  A: X%4X\t  B: X%4X\tX%4X: X%4X\n", (*alu)->a, (*alu)->b, memory_start + 12, memory[disp_mem + 12]);
+  printf("\tMAR: X%4X\tMDR: X%4X\tX%4X: X%4X\n", (*cpu)->mar, (*cpu)->mdr, memory_start + 13, memory[disp_mem + 13]);
+  printf("\tCC: N:%i Z:%i P:%i\t\t\tX%4X: X%4X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
+  printf("\t\t\t\t\tX%4X: X%4X\n", memory_start + 15, memory[disp_mem + 15]);
   printf("Select: 1) Load, 3) Step, 5) Display Mem, 9)Exit\n");
   printf(">_\n");
   printf("-----------------------------------------------------\n");
