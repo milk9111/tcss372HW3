@@ -229,32 +229,26 @@ int main (int argc, char* argv[]) {
       } else {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
-    } else if (response == 3) {
-    } else if (response == 5) {
-
-    }
 	  controller (cpu, alu);
-	} else if (response == 5) {
-	  printf ("Starting Address: ");
-	  scanf("%X", &newAddress);
-	  
-	  if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
-		  
-		memory_start = newAddress;
-		display(&cpu, &alu, 1);
-	  } else {
-		 // printf("here\n");
-		printf ("Not a valid address <ENTER> to continue.");
-		//scanf("%c", &nextLine);
-	  }
-	}
-  
-	
+    } else if (response == 5) {
+      printf ("Starting Address: ");
+      scanf("%X", &newAddress);
+      if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
+        memory_start = newAddress;
+        display(&cpu, &alu, 1);
+      } else {
+        // printf("here\n");
+        printf ("Not a valid address <ENTER> to continue.");
+        //scanf("%c", &nextLine);
+      }
+    }
+  }
   free(cpu);
   free(alu);
   fclose(infile);
 	return 0;
 }
+
 
 void display(CPU_p *cpu, ALU_p *alu, int showChoices) {
   int disp_mem = ((int) memory_start) - 12288;
