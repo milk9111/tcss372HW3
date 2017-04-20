@@ -1,0 +1,7 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=6117BDA4
+eax=00000030 ebx=00003001 ecx=00000030 edx=20049E78 esi=00002FFF edi=00000001
+ebp=611BFCD0 esp=0061B650 program=C:\Users\Vincent\Documents\GitHub\tcss372HW3\bin.exe, pid 2644, thread main
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+End of stack trace
