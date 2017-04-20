@@ -18,19 +18,19 @@ unsigned int memory[32];   // 32 words of memory enough to store simple program
 unsigned short memory_start = 0x3000;
 
 void initializeCPU(CPU_p *, ALU_p *);
-void display(CPU_p *, ALU_p *);
+void display(CPU_p *, ALU_p *, int);
 void setFlags(CPU_p *, ALU_p *, Register, Register);
 
 // This is the trap function that handles trap vectors. Acts as 
 // the trap vector table for now. Currently exits the HALT trap command.
-void trap(int trap_vector) {
+int trap(int trap_vector) {
 	//if (trap_vector == 0x0020) { //GETC
 	//} else if (trap_vector == 0x0021) { //OUT
 	//} else if (trap_vector == 0x0022) { //PUTS
 	//} else if (trap_vector == 0x0023) { //IN
 	//} else if (trap_vector == 0x0024) { //PUTSP
 	if (trap_vector == 25) { //HALT
-		exit(0);
+		return 0;
 	}
 }
 
@@ -56,11 +56,15 @@ int controller (CPU_p cpu, ALU_p alu) {
     // do any initializations here
 	Register opcode, Rd, Rs1, Rs2, immed5, offset9;	// fields for the IR
 	Register effective_addr, trapVector8, BaseR;
+	char *nextLine = malloc (sizeof(char));
   initializeCPU(&cpu, &alu);
     int state = FETCH, BEN;
     for (;;) {
         switch (state) {
             case FETCH:
+			  display(&cpu, &alu, 0);
+			  scanf("%c", nextLine);	//This is for the user to press enter to go to next step.
+										//Probably a better way to do this.
               cpu->mar = cpu->pc;
               cpu->pc++;
               cpu->mdr = memory[cpu->mar];
@@ -156,7 +160,9 @@ int controller (CPU_p cpu, ALU_p alu) {
                   setFlags(&cpu, &alu, opcode, Rd);
                   break;
                 case TRAP:
-                  trap(cpu->mar);
+                  if (!trap(cpu->mar)) {
+					return 0;
+				  }
                   break;
                 case BR: 
                   if (BEN) {
@@ -209,7 +215,7 @@ int main (int argc, char* argv[]) {
   initializeCPU(&cpu, &alu);
 
   while (response != 9) {
-    display(&cpu, &alu);
+    display(&cpu, &alu, 1);
     scanf("%d", &response);
     if (response == 1) {
       printf(" File name: ");
@@ -217,25 +223,30 @@ int main (int argc, char* argv[]) {
       infile = fopen(file_name, "r");
       if (infile != NULL) {
         while (fscanf(infile, "%X", &memory[n-1]) != EOF && n < 32) { n++; } ;
-        display(&cpu, &alu);
+        //display(&cpu, &alu, 1);
       } else {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
     } else if (response == 3) {
-    
     } else if (response == 5) {
 
     }
-  }
-	controller (cpu, alu);
+	  controller (cpu, alu);
+	}
+  
+	
   free(cpu);
   free(alu);
 	return 0;
 }
 
-void display(CPU_p *cpu, ALU_p *alu) {
+void display(CPU_p *cpu, ALU_p *alu, int showChoices) {
   int disp_mem = ((int) memory_start) - 12288;
-  printf("\tWelcome to the LC-3 Simulator Simulator\n");
+  if (showChoices) {
+	printf("\n\tWelcome to the LC-3 Simulator Simulator\n");
+  } else {
+	printf("\n\n");
+  }
   printf("\tRegisters\t\t\tMemory\n");
   printf("\tR0: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[0], memory_start, memory[disp_mem]);
   printf("\tR1: X%04X\t\t\tX%04X: X%04X\n", (*cpu)->reg_file[1], memory_start + 1, memory[disp_mem + 1]);
@@ -253,7 +264,9 @@ void display(CPU_p *cpu, ALU_p *alu) {
   printf("\tMAR: X%04X\tMDR: X%04X\tX%04X: X%04X\n", (*cpu)->mar, (*cpu)->mdr, memory_start + 13, memory[disp_mem + 13]);
   printf("\tCC: N:%i Z:%i P:%i\t\t\tX%04X: X%04X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
   printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 15, memory[disp_mem + 15]);
-  printf("Select: 1) Load, 3) Step, 5) Display Mem, 9)Exit\n");
+  if (showChoices) {
+	printf("Select: 1) Load, 3) Step, 5) Display Mem, 9)Exit\n");
+  }
   printf(">");
 }
 
