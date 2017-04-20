@@ -210,6 +210,7 @@ int main (int argc, char* argv[]) {
   FILE *infile;
   char file_name[30];
   char *nextLine = malloc(sizeof(char));
+  char temp_start[6];
 	CPU_p cpu = malloc (sizeof(CPU_s));
 	ALU_p alu = malloc (sizeof(ALU_s));
 
@@ -229,6 +230,9 @@ int main (int argc, char* argv[]) {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
     } else if (response == 3) {
+    } else if (response == 5) {
+
+    }
 	  controller (cpu, alu);
 	} else if (response == 5) {
 	  printf ("Starting Address: ");
@@ -244,7 +248,7 @@ int main (int argc, char* argv[]) {
 		//scanf("%c", &nextLine);
 	  }
 	}
-  }
+  
 	
   free(cpu);
   free(alu);
