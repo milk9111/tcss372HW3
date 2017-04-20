@@ -206,8 +206,10 @@ int controller (CPU_p cpu, ALU_p alu) {
 // the command runs.
 int main (int argc, char* argv[]) {
   int n = 1, response = 0;
+  unsigned short newAddress;
   FILE *infile;
   char file_name[30];
+  char *nextLine = malloc(sizeof(char));
 	CPU_p cpu = malloc (sizeof(CPU_s));
 	ALU_p alu = malloc (sizeof(ALU_s));
 
@@ -228,11 +230,25 @@ int main (int argc, char* argv[]) {
       }
     } else if (response == 3) {
 	  controller (cpu, alu);
+	} else if (response == 5) {
+	  printf ("Starting Address: ");
+	  scanf("%X", &newAddress);
+	  
+	  if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
+		  
+		memory_start = newAddress;
+		display(&cpu, &alu, 1);
+	  } else {
+		 // printf("here\n");
+		printf ("Not a valid address <ENTER> to continue.");
+		//scanf("%c", &nextLine);
+	  }
 	}
   }
 	
   free(cpu);
   free(alu);
+  fclose(infile);
 	return 0;
 }
 
