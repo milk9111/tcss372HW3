@@ -230,9 +230,6 @@ int main (int argc, char* argv[]) {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
     } else if (response == 3) {
-    } else if (response == 5) {
-
-    }
 	  controller (cpu, alu);
 	} else if (response == 5) {
 	  printf ("Starting Address: ");
@@ -248,7 +245,7 @@ int main (int argc, char* argv[]) {
 		//scanf("%c", &nextLine);
 	  }
 	}
-  
+  }
 	
   free(cpu);
   free(alu);
