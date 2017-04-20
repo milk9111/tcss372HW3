@@ -229,14 +229,14 @@ int main (int argc, char* argv[]) {
       } else {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
-<<<<<<< HEAD
-	  controller (cpu, alu);
+    } else if (response == 3) {
+      controller (cpu, alu);
     } else if (response == 5) {
       printf ("Starting Address: ");
       scanf("%X", &newAddress);
       if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
-        memory_start = newAddress;
-        display(&cpu, &alu, 1);
+		  memory_start = newAddress;
+      display(&cpu, &alu, 1);
       } else {
         // printf("here\n");
         printf ("Not a valid address <ENTER> to continue.");
@@ -244,26 +244,7 @@ int main (int argc, char* argv[]) {
       }
     }
   }
-=======
-    } else if (response == 3) {
-	  controller (cpu, alu);
-	} else if (response == 5) {
-	  printf ("Starting Address: ");
-	  scanf("%X", &newAddress);
-	  
-	  if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
-		  
-		memory_start = newAddress;
-		display(&cpu, &alu, 1);
-	  } else {
-		 // printf("here\n");
-		printf ("Not a valid address <ENTER> to continue.");
-		//scanf("%c", &nextLine);
-	  }
-	}
-  }
 	
->>>>>>> b56ac3e433a8806047009485c0070d8eae17553c
   free(cpu);
   free(alu);
   fclose(infile);
