@@ -230,19 +230,21 @@ int main (int argc, char* argv[]) {
         printf("ERROR: File not found. Press <ENTER> to continue.");
       }
     } else if (response == 3) {
-      controller (cpu, alu);
-    } else if (response == 5) {
-      printf ("Starting Address: ");
-      scanf("%X", &newAddress);
-      if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
-		  memory_start = newAddress;
-      display(&cpu, &alu, 1);
-      } else {
-        // printf("here\n");
-        printf ("Not a valid address <ENTER> to continue.");
-        //scanf("%c", &nextLine);
-      }
-    }
+	  controller (cpu, alu);
+	} else if (response == 5) {
+	  printf ("Starting Address: ");
+	  scanf("%X", &newAddress);
+	  
+	  if (newAddress >= 0x3000 && newAddress <= (0x301F - 16)) {
+		  
+		memory_start = newAddress;
+		display(&cpu, &alu, 1);
+	  } else {
+		 // printf("here\n");
+		printf ("Not a valid address <ENTER> to continue.");
+		//scanf("%c", &nextLine);
+	  }
+	}
   }
 	
   free(cpu);
@@ -250,7 +252,6 @@ int main (int argc, char* argv[]) {
   fclose(infile);
 	return 0;
 }
-
 
 void display(CPU_p *cpu, ALU_p *alu, int showChoices) {
   int disp_mem = ((int) memory_start) - 12288;
@@ -271,7 +272,7 @@ void display(CPU_p *cpu, ALU_p *alu, int showChoices) {
   printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 8, memory[disp_mem + 8]);
   printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 9, memory[disp_mem + 9]);
   printf("\t\t\t\t\tX%04X: X%04X\n", memory_start + 10, memory[disp_mem + 10]);
-  printf("\t PC: X%4i\t IR: X%04X\tX%04X: X%04X\n", (*cpu)->pc + 3000, (*cpu)->ir, memory_start + 11, memory[disp_mem + 11]);
+  printf("\t PC: X%4X\t IR: X%04X\tX%04X: X%04X\n", (*cpu)->pc + 0x3000, (*cpu)->ir, memory_start + 11, memory[disp_mem + 11]);
   printf("\t  A: X%04X\t  B: X%04X\tX%04X: X%04X\n", (*alu)->a, (*alu)->b, memory_start + 12, memory[disp_mem + 12]);
   printf("\tMAR: X%04X\tMDR: X%04X\tX%04X: X%04X\n", (*cpu)->mar, (*cpu)->mdr, memory_start + 13, memory[disp_mem + 13]);
   printf("\tCC: N:%i Z:%i P:%i\t\t\tX%04X: X%04X\n", (*cpu)->n, (*cpu)->z, (*cpu)->p, memory_start + 14, memory[disp_mem + 14]);
